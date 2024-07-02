@@ -8,16 +8,53 @@ import {
   Layout,
   Select,
   Typography,
+  notification,
 } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import Cookies from "js-cookie";
+import CreateNewOption from "./CreateNewOption";
 
 const { Header } = Layout;
 
 const CreateNewProduct = () => {
   const navigate = useNavigate();
+  const [form] = Form.useForm();
+  const token = Cookies.get("token");
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [createProductSuccess, setCreateProductSuccess] = useState(false);
+  const [productID, setProductID] = useState(null);
   const dataCategory = useSelector((state) => state.categoryReducer.data);
+
+  const handleFinish = (values) => {
+    console.log(values);
+    axios
+      .post(`${import.meta.env.VITE_BASE_URL}products/create-product`, values, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        setCreateProductSuccess(true);
+        console.log(res.data.result);
+        setProductID(res.data.result);
+        notification.success({
+          message: "success",
+          description: "Tạo sản phẩm thành công",
+          duration: 3,
+          type: "success",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        notification.error({
+          error: "error",
+          description: "Tạo sản phẩm thất bại!",
+          duration: 3,
+          type: "error",
+        });
+      });
+  };
 
   const renderFormItems = (items) =>
     items.map((item) => (
@@ -61,9 +98,10 @@ const CreateNewProduct = () => {
           size="middle"
           placeholder="Chọn loại sản phẩm"
           options={dataCategory?.data.map((category) => ({
-            //label: category.name,
-            //value: category._id,
+            label: category.name,
+            value: category._id,
           }))}
+          onChange={(value) => setSelectedCategory(value)}
         />
       ),
     },
@@ -174,6 +212,20 @@ const CreateNewProduct = () => {
         />
       ),
     },
+
+    {
+      label: "Thông tin IMEI",
+      name: "other",
+      component: (
+        <Input.TextArea
+          rows={2}
+          size="middle"
+          className="w-[50%]"
+          placeholder="Thông tin imei của sản phẩm"
+        />
+      ),
+    },
+
     {
       label: "Hệ điều hành sản phẩm",
       name: "operatingSystem",
@@ -186,7 +238,8 @@ const CreateNewProduct = () => {
         >
           <Select.Option value="Android">Android</Select.Option>
           <Select.Option value="IOS">IOS</Select.Option>
-          
+          <Select.Option value="Window">Window</Select.Option>
+          <Select.Option value="MacOs">MacOs</Select.Option>
         </Select>
       ),
     },
@@ -236,18 +289,7 @@ const CreateNewProduct = () => {
         />
       ),
     },
-    {
-      label: "IMEL sản phẩm",
-      name: "other",
-      component: (
-        <Input.TextArea
-          rows={2}
-          size="middle"
-          className="w-[50%]"
-          placeholder="Thông tin IMEL của sản phẩm"
-        />
-      ),
-    },
+    
   ];
 
   return (
@@ -258,27 +300,32 @@ const CreateNewProduct = () => {
           onClick={() => navigate(-1)}
         />
         <Typography.Title level={4} style={{ margin: 0 }}>
-          Tạo mới sản phẩm
+          {createProductSuccess ? "Tạo mới option" : "Tạo mới sản phẩm"}
         </Typography.Title>
       </Header>
 
-      <Flex
-        vertical
-        className="border w-[50%] p-4 mx-auto my-auto mt-3 shadow-xl rounded-xl"
-        style={{ flex: 1 }}
-      >
-        <Form layout="horizontal">
-          {renderFormItems(formItems)}
-          <Form.Item>
-            <Button
-              type="primary"
-              className="bg-[#407cff] w-[30%]"
-            >
-              Tạo sản phẩm
-            </Button>
-          </Form.Item>
-        </Form>
-      </Flex>
+      {createProductSuccess ? (
+        <CreateNewOption productId={productID._id} />
+      ) : (
+        <Flex
+          vertical
+          className="border w-[50%] p-4 mx-auto my-auto mt-3 shadow-xl rounded-xl"
+          style={{ flex: 1 }}
+        >
+          <Form form={form} layout="horizontal" onFinish={handleFinish}>
+            {renderFormItems(formItems)}
+            <Form.Item>
+              <Button
+                htmlType="submit"
+                type="primary"
+                className="bg-[#407cff] w-[30%]"
+              >
+                Tạo sản phẩm
+              </Button>
+            </Form.Item>
+          </Form>
+        </Flex>
+      )}
     </div>
   );
 };
