@@ -1,12 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Table } from "antd";
+import axios from "axios";
+import Cookies from "js-cookie";
 
+const ShowReviewsModal = ({ productId, onClose }) => {
+  const [reviews, setReviews] = useState([]);
 
-const ShowReviewsModal = ({ reviews, onClose }) => {
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/review/${productId}`);
+        setReviews(response.data.data);
+      } catch (error) {
+        console.error("Lỗi khi lấy đánh giá:", error);
+      }
+    };
+
+    if (productId) {
+      fetchReviews();
+    }
+  }, [productId]);
+
   return (
     <Modal
       title="Đánh giá sản phẩm"
-      visible={true} // Chỉ cần sử dụng visible={true} để luôn hiển thị modal khi được sử dụng
+      visible={Boolean(productId)}
       onCancel={onClose}
       footer={[
         <Button key="close" onClick={onClose}>
@@ -29,5 +47,6 @@ const ShowReviewsModal = ({ reviews, onClose }) => {
 };
 
 export default ShowReviewsModal;
+
 
 //nh

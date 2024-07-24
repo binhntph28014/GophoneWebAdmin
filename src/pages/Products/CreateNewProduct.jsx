@@ -212,20 +212,6 @@ const CreateNewProduct = () => {
         />
       ),
     },
-
-    {
-      label: "Thông tin IMEI",
-      name: "other",
-      component: (
-        <Input.TextArea
-          rows={2}
-          size="middle"
-          className="w-[50%]"
-          placeholder="Thông tin imei của sản phẩm"
-        />
-      ),
-    },
-
     {
       label: "Hệ điều hành sản phẩm",
       name: "operatingSystem",
@@ -289,7 +275,18 @@ const CreateNewProduct = () => {
         />
       ),
     },
-    
+    {
+      label: "Thông tin khác",
+      name: "other",
+      component: (
+        <Input.TextArea
+          rows={2}
+          size="middle"
+          className="w-[50%]"
+          placeholder="Thông tin khác của sản phẩm"
+        />
+      ),
+    },
   ];
 
   return (
