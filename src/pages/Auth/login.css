@@ -1,0 +1,68 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.flex-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: url('/public/mhlogin.png.jpg') no-repeat center center;
+  background-size: cover;
+  
+}
+
+
+
+.gradient-bg {
+  background: radial-gradient(circle, rgba(237, 76, 17, 0.6) 20%, rgba(245, 106, 0, 0.4) 70%);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.login-form {
+  background: rgba(232, 240, 216, 0.5); /* Màu trắng với độ trong suốt */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  width: 500px;
+  z-index: 1; /* Đặt trên lớp nền */
+}
+
+.login-form .ant-input {
+  background-color: rgba(255, 255, 255, 0.75); /* Màu nền trong suốt cho input */
+  border: none; /* Loại bỏ viền */
+}
+.login-form .ant-input:focus {
+  border-color: #faf8f897; /* Màu viền khi input được focus */
+}
+
+.login-form .ant-input-password {
+  background-color: rgba(255, 255, 255, 0.75); /* Màu nền trong suốt cho input */
+  border: none; /* Loại bỏ viền */
+}
+
+.login-form .login-button {
+  background-color: #ef620b; /* Màu nền của button */
+  border-color: #ef620b; /* Màu viền của button */
+  color: #ffffff; /* Màu chữ của button */
+}
+
+
+
+.ant-card-body{
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+  
