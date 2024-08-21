@@ -106,6 +106,7 @@ const Invoice = () => {
         const timeA = new Date(a.createdAt).getTime();
         const timeB = new Date(b.createdAt).getTime();
         return timeA - timeB;
+
       },
       filters: [
         { text: "Đã hủy", value: "Đã hủy" },
@@ -145,10 +146,10 @@ const Invoice = () => {
   const filteredData = invoiceData?.result.filter((invoice) =>
     invoice.info_id?.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-//tích hợp tìm kiếm và chuyền dữ liệu qua dataSource
 
   // Xác định nguồn dữ liệu: Nếu có tìm kiếm, sử dụng filteredData; nếu không, sử dụng invoiceData?.result
   const dataSource = filteredData?.length > 0 ? filteredData : invoiceData?.result;
+
 
   return (
     <div>
@@ -198,7 +199,7 @@ const DetailContent = ({ data, close }) => {
             {
               headers: {
                 Authorization: `Bearer ${token}`,
-              },
+},
             }
           )
           .then((response) => {
@@ -297,7 +298,7 @@ const DetailContent = ({ data, close }) => {
             {
               headers: {
                 Authorization: `Bearer ${token}`,
-              },
+},
             }
           )
           .then((response) => {
@@ -398,7 +399,7 @@ const DetailContent = ({ data, close }) => {
           <Typography.Title level={4} style={{ margin: 0 }}>
             Mã hóa đơn: {data._id}
           </Typography.Title>
-          <Typography.Text className="text-base">
+<Typography.Text className="text-base">
             Ngày tạo: {formattedDate(data.createdAt)}
           </Typography.Text>
           {isCancelled ? (
@@ -465,6 +466,7 @@ const DetailContent = ({ data, close }) => {
                     </Typography.Text>
                     <Typography.Text>
                       Tổng tiền :{" "}
+
                       {(
                         product.quantity *
                         (product.option_id.price * (1 - (product.discount_value ? product.discount_value / 100 : 0)))

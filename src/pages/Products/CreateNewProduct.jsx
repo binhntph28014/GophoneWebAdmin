@@ -327,4 +327,6 @@ const CreateNewProduct = () => {
   );
 };
 
+
 export default CreateNewProduct;
+
