@@ -228,7 +228,7 @@ const CreateNewProduct = () => {
           <Select.Option value="MacOs">MacOs</Select.Option>
         </Select>
       ),
-    },
+},
     {
       label: "Thông tin pin",
       name: "battery",
@@ -276,14 +276,14 @@ const CreateNewProduct = () => {
       ),
     },
     {
-      label: "Thông tin khác",
+      label: "IMEI",
       name: "other",
       component: (
         <Input.TextArea
           rows={2}
           size="middle"
           className="w-[50%]"
-          placeholder="Thông tin khác của sản phẩm"
+          placeholder="Imei điện thoại"
         />
       ),
     },
