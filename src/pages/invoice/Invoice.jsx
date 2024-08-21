@@ -9,6 +9,7 @@ import {
   Col,
   Dropdown,
   Menu,
+  Input,
   notification,
 } from "antd";
 import moment from "moment";
@@ -24,6 +25,7 @@ const Invoice = () => {
   const invoiceData = useSelector((state) => state.invoiceReducer.data);
   const [openDialogDetail, setOpenDialogDetail] = useState(false);
   const [selectInvoiceItem, setSelectInvoiceItem] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const showModelDetail = (item) => {
     console.log(item);
@@ -103,7 +105,8 @@ const Invoice = () => {
         // Sắp xếp theo thời gian tạo đơn
         const timeA = new Date(a.createdAt).getTime();
         const timeB = new Date(b.createdAt).getTime();
-        return timeA - timeB;},
+        return timeA - timeB;
+      },
       filters: [
         { text: "Đã hủy", value: "Đã hủy" },
         { text: "Đã giao hàng", value: "Đã giao hàng" },
@@ -139,11 +142,25 @@ const Invoice = () => {
     },
   ];
 
+  const filteredData = invoiceData?.result.filter((invoice) =>
+    invoice.info_id?.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+//tích hợp tìm kiếm và chuyền dữ liệu qua dataSource
+
+  // Xác định nguồn dữ liệu: Nếu có tìm kiếm, sử dụng filteredData; nếu không, sử dụng invoiceData?.result
+  const dataSource = filteredData?.length > 0 ? filteredData : invoiceData?.result;
+
   return (
     <div>
+      <Input
+        placeholder="Tìm kiếm theo tên khách hàng"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)} // Cập nhật giá trị tìm kiếm
+        style={{ marginBottom: "16px" }} // Khoảng cách dưới ô tìm kiếm
+      />
       <Table
         columns={columns}
-        dataSource={invoiceData?.result}
+        dataSource={dataSource}
         bordered
         rowKey={(record) => record._id}
       />
@@ -195,20 +212,20 @@ const DetailContent = ({ data, close }) => {
                 type: "wfd",
               }
             )
-            .then((response) => {
-              notification.success({
-                message: "Thành công",
-                description: "Upate trạng thái đơn hàng thành công!",
-                duration: 3,
-                type: "success",
-                
-              });
-              close();    
+              .then((response) => {
+                notification.success({
+                  message: "Thành công",
+                  description: "Upate trạng thái đơn hàng thành công!",
+                  duration: 3,
+                  type: "success",
 
-            })
-            .catch((error) => {
-              console.log("Lỗi khi gửi yêu cầu đẩy thông báo:", error);
-            });
+                });
+                close();
+
+              })
+              .catch((error) => {
+                console.log("Lỗi khi gửi yêu cầu đẩy thông báo:", error);
+              });
           })
           .catch((error) => {
             console.log(error);
@@ -244,20 +261,20 @@ const DetailContent = ({ data, close }) => {
                 type: "delivere",
               }
             )
-            .then((response) => {
-              notification.success({
-                message: "Thành công",
-                description: "Upate trạng thái đơn hàng thành công!",
-                duration: 3,
-                type: "success",
-                
-              });
-              close();    
+              .then((response) => {
+                notification.success({
+                  message: "Thành công",
+                  description: "Upate trạng thái đơn hàng thành công!",
+                  duration: 3,
+                  type: "success",
 
-            })
-            .catch((error) => {
-              console.log("Lỗi khi gửi yêu cầu đẩy thông báo:", error);
-            });
+                });
+                close();
+
+              })
+              .catch((error) => {
+                console.log("Lỗi khi gửi yêu cầu đẩy thông báo:", error);
+              });
           })
           .catch((error) => {
             console.log(error);
@@ -294,20 +311,20 @@ const DetailContent = ({ data, close }) => {
                 type: "delivered",
               }
             )
-            .then((response) => {
-              notification.success({
-                message: "Thành công",
-                description: "Upate trạng thái đơn hàng thành công!",
-                duration: 3,
-                type: "success",
-                
-              });
-              close();    
+              .then((response) => {
+                notification.success({
+                  message: "Thành công",
+                  description: "Upate trạng thái đơn hàng thành công!",
+                  duration: 3,
+                  type: "success",
 
-            })
-            .catch((error) => {
-              console.log("Lỗi khi gửi yêu cầu đẩy thông báo:", error);
-            });
+                });
+                close();
+
+              })
+              .catch((error) => {
+                console.log("Lỗi khi gửi yêu cầu đẩy thông báo:", error);
+              });
           })
           .catch((error) => {
             console.log(error);
@@ -343,20 +360,20 @@ const DetailContent = ({ data, close }) => {
                 type: "canceled",
               }
             )
-            .then((response) => {
-              notification.success({
-                message: "Thành công",
-                description: "Upate trạng thái đơn hàng thành công!",
-                duration: 3,
-                type: "canceled",
-                
-              });
-              close();    
+              .then((response) => {
+                notification.success({
+                  message: "Thành công",
+                  description: "Upate trạng thái đơn hàng thành công!",
+                  duration: 3,
+                  type: "canceled",
 
-            })
-            .catch((error) => {
-              console.log("Lỗi khi gửi yêu cầu đẩy thông báo:", error);
-            });
+                });
+                close();
+
+              })
+              .catch((error) => {
+                console.log("Lỗi khi gửi yêu cầu đẩy thông báo:", error);
+              });
           })
           .catch((error) => {
             console.log(error);
@@ -428,18 +445,18 @@ const DetailContent = ({ data, close }) => {
                     <Typography.Text className="text-base text-black font-semibold">
                       {product.option_id.product_id.name} -{" "}
                       {
-    product.option_id.price.toLocaleString("vi-VN") 
-  } đ
+                        product.option_id.price.toLocaleString("vi-VN")
+                      } đ
                     </Typography.Text>
                     <Typography.Text>
-                    {product.discount_value ? `Đã giảm giá ${product.discount_value}% ` : 'Đã giảm giá 0%'}
- :{" "}
-{(
-  (
-    product.option_id.price * (1 - (product.discount_value ? product.discount_value / 100 : 0))
-  )
-).toLocaleString("vi-VN")}{" "}
-đ                    </Typography.Text>
+                      {product.discount_value ? `Đã giảm giá ${product.discount_value}% ` : 'Đã giảm giá 0%'}
+                      :{" "}
+                      {(
+                        (
+                          product.option_id.price * (1 - (product.discount_value ? product.discount_value / 100 : 0))
+                        )
+                      ).toLocaleString("vi-VN")}{" "}
+                      đ                    </Typography.Text>
                     <Typography.Text>
                       màu sản phẩm: {product.option_id.name_color}
                     </Typography.Text>
@@ -447,15 +464,15 @@ const DetailContent = ({ data, close }) => {
                       Số lượng mua: {product.quantity}
                     </Typography.Text>
                     <Typography.Text>
-  Tổng tiền :{" "}
-  {(
-    product.quantity * 
-    (product.option_id.price * (1 - (product.discount_value ? product.discount_value / 100 : 0)))
-  ).toLocaleString("vi-VN")}{" "}
-  đ
-</Typography.Text>
+                      Tổng tiền :{" "}
+                      {(
+                        product.quantity *
+                        (product.option_id.price * (1 - (product.discount_value ? product.discount_value / 100 : 0)))
+                      ).toLocaleString("vi-VN")}{" "}
+                      đ
+                    </Typography.Text>
 
-                   
+
                   </div>
                 </div>
               );
