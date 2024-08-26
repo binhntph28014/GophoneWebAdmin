@@ -17,7 +17,7 @@ const Customers = () => {
 
   useEffect(() => {
     dispatch(fetchCustomerRequest('customer', token));
-    fetchOrders(); 
+    fetchOrders();
   }, [dispatch, token]);
 
   const fetchOrders = async () => {
@@ -76,7 +76,7 @@ const Customers = () => {
   };
 
   const modalStyle = {
-    width: '80%',  
+    width: '80%',
   };
   const purchaseColumns = [
     {
@@ -89,10 +89,14 @@ const Customers = () => {
     },
     {
       title: 'Tên sản phẩm',
-      dataIndex: 'productsOrder',
-      key: 'option_id',
-render: (productsOrder) => productsOrder.map(product => product.option_id.product_id.name).join(", "),
-      width: '15%',
+    dataIndex: 'productsOrder',
+    key: 'option_id',
+    render: (productsOrder) => {
+      return productsOrder && productsOrder.length > 0
+        ? productsOrder.map(product => product.option_id?.product_id?.name || 'N/A').join(", ")
+        : 'N/A';
+    },
+    width: '15%',
     },
     {
       title: 'Số lượng',
@@ -204,7 +208,7 @@ render: (productsOrder) => productsOrder.map(product => product.option_id.produc
                   )
                   .then(() => {
                     dispatch(fetchCustomerRequest('customer', token));
-notification.success({
+                    notification.success({
                       message: 'Thành công',
                       description: 'Chuyển trạng thái thành công!',
                       duration: 3,
